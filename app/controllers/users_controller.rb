@@ -16,7 +16,6 @@ class UsersController < ApplicationController
 
   # POST /users
   def create
-    debugger
     @user = User.new(user_params)
     Envelope.all.each do |e|
       UserEnvelope.create(user: @user, envelope: e, amount: 0)
