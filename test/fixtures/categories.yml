@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  group: MyString
+  hierarchy_1: MyString
+  hierarchy_2: MyString
+  hierarchy_3: MyString
+  envelope: one
+
+two:
+  group: MyString
+  hierarchy_1: MyString
+  hierarchy_2: MyString
+  hierarchy_3: MyString
+  envelope: two
