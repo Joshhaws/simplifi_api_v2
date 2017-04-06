@@ -59,7 +59,7 @@ class AccountsController < ApplicationController
     exchange_token_response = client.item.public_token.exchange(params['public_token'])
     access_token = exchange_token_response['access_token']
 
-    @current_user = User.find_by(token: 'KXT02Okxt0M9VWpr9ZRR4wtt')
+    @current_user = User.find_by(token: 'HIWvsucD1sQYdtRlFY45yAtt')
     PlaidAccessToken.create(user_id: @current_user.id, plaid_access_token: access_token)
 
     #code that takes the response and populates our db
