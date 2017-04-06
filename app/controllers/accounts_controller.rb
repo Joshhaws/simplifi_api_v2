@@ -85,7 +85,6 @@ class AccountsController < ApplicationController
                            public_key: "4181b5e7e3476f2974824d3a1d4e52")
     now = Date.today
     thirty_days_ago = (now - 30)
-    debugger
     transactions_response = client.transactions.get(@current_user.plaid_access_tokens.last.plaid_access_token, thirty_days_ago, now)
     transactions_response['transactions'].each do |t|
       AccountTransaction.create!(account_id: t['account_id'], user_id: @current_user.id, transaction_id: t['transaction_id'], category_id: t['category_id'], amount:t['amount'], transaction_type: t['transaction_type'], date: t['date'], pending: t['pending'], pending_transaction_id: t['pending_transaction_id'], city: t['city'], state: t['state'], zip: t['zip'], lat: t['lat'], lon:t['lon'], name: t['name'], address: t['address'])
