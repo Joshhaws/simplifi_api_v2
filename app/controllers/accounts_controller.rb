@@ -59,11 +59,8 @@ class AccountsController < ApplicationController
     exchange_token_response = client.item.public_token.exchange(params['public_token'])
     access_token = exchange_token_response['access_token']
 
-    @current_user = User.find_by(token: 'AxzRxLt9rc2kr7okmp0aFgtt')
+    @current_user = User.find_by(token: 'KXT02Okxt0M9VWpr9ZRR4wtt')
     PlaidAccessToken.create(user_id: @current_user.id, plaid_access_token: access_token)
-
-    # puts 'access token:' + access_token
-    # render json: exchange_token_response
 
     #code that takes the response and populates our db
     plaid_accounts
@@ -88,10 +85,26 @@ class AccountsController < ApplicationController
                            public_key: "4181b5e7e3476f2974824d3a1d4e52")
     now = Date.today
     thirty_days_ago = (now - 30)
+    debugger
     transactions_response = client.transactions.get(@current_user.plaid_access_tokens.last.plaid_access_token, thirty_days_ago, now)
     transactions_response['transactions'].each do |t|
-      AccountTransaction.create!(account_id: t['account_id'], transaction_id: t['transaction_id'], category_id: t['category_id'], amount:t['amount'], transaction_type: t['transaction_type'], date: t['date'], pending: t['pending'], pending_transaction_id: t['pending_transaction_id'], city: t['city'], state: t['state'], zip: t['zip'], lat: t['lat'], lon:t['lon'], name: t['name'], address: t['address'], )
+      AccountTransaction.create!(account_id: t['account_id'], user_id: @current_user.id, transaction_id: t['transaction_id'], category_id: t['category_id'], amount:t['amount'], transaction_type: t['transaction_type'], date: t['date'], pending: t['pending'], pending_transaction_id: t['pending_transaction_id'], city: t['city'], state: t['state'], zip: t['zip'], lat: t['lat'], lon:t['lon'], name: t['name'], address: t['address'])
     end
+  end
+
+  def update_account_transactions
+    client = Plaid::Client.new(env: :sandbox,
+                           client_id: "58d324444e95b819440e4877",
+                           secret: "92f24058f1bbfd1ee613a5a98b3f0d",
+                           public_key: "4181b5e7e3476f2974824d3a1d4e52")
+     now = Date.today
+     thirty_days_ago = (now - 30)
+     @current_user.plaid_access_tokens.each do |user_token|
+       transactions_response = client.transactions.get(user_token.plaid_access_token, thirty_days_ago, now)
+       transactions_response['transactions'].each do |t|
+         AccountTransaction.create!(account_id: t['account_id'], transaction_id: t['transaction_id'], user_id: @current_user, category_id: t['category_id'], amount:t['amount'], transaction_type: t['transaction_type'], date: t['date'], pending: t['pending'], pending_transaction_id: t['pending_transaction_id'], city: t['city'], state: t['state'], zip: t['zip'], lat: t['lat'], lon:t['lon'], name: t['name'], address: t['address'], )
+       end
+     end
   end
 
   def plaid_item

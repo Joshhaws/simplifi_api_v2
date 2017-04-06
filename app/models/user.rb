@@ -1,7 +1,7 @@
 class User < ApplicationRecord
     has_many :plaid_access_tokens
     has_many :accounts
-    has_many :account_transactions, through: :accounts
+    has_many :account_transactions
     has_many :goals
     has_many :user_envelopes
 

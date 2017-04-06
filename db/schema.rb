@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170331003623) do
+ActiveRecord::Schema.define(version: 20170331210144) do
 
   create_table "account_transactions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "transaction_id"
@@ -30,9 +30,11 @@ ActiveRecord::Schema.define(version: 20170331003623) do
     t.integer  "account_id"
     t.datetime "created_at",                        null: false
     t.datetime "updated_at",                        null: false
+    t.integer  "user_id"
     t.index ["account_id"], name: "index_account_transactions_on_account_id", using: :btree
     t.index ["category_id"], name: "index_account_transactions_on_category_id", using: :btree
     t.index ["transaction_id"], name: "index_account_transactions_on_transaction_id", using: :btree
+    t.index ["user_id"], name: "index_account_transactions_on_user_id", using: :btree
   end
 
   create_table "accounts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -56,15 +58,15 @@ ActiveRecord::Schema.define(version: 20170331003623) do
     t.string   "hierarchy_2"
     t.string   "hierarchy_3"
     t.integer  "envelope_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["envelope_id"], name: "index_categories_on_envelope_id", using: :btree
   end
 
   create_table "envelopes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "goals", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -111,8 +113,7 @@ ActiveRecord::Schema.define(version: 20170331003623) do
     t.index ["token"], name: "index_users_on_token", using: :btree
   end
 
-  add_foreign_key "account_transactions", "accounts"
-  add_foreign_key "account_transactions", "categories"
+  add_foreign_key "account_transactions", "users"
   add_foreign_key "accounts", "users"
   add_foreign_key "categories", "envelopes"
   add_foreign_key "plaid_access_tokens", "users"
