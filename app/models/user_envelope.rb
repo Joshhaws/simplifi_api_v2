@@ -2,6 +2,11 @@ class UserEnvelope < ApplicationRecord
   belongs_to :user
   belongs_to :envelope
 
+  def enevelope_name
+    env = Envelope.find_by(id: self.envelope_id)
+    return env.name
+  end
+
   def envelope_amount_spent
     envelope_amount = 0
     env = Envelope.find_by(id: self.envelope_id)
