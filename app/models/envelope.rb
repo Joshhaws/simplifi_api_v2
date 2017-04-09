@@ -1,4 +1,4 @@
 class Envelope < ApplicationRecord
   has_many :user_envelopes
-  belongs_to :category
+  has_many :categories
 end
