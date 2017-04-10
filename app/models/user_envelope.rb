@@ -45,4 +45,16 @@ class UserEnvelope < ApplicationRecord
     end
     return categories_amount_spent
   end
+
+  def user_envelope_transactions
+    envelope_transactions = []
+    env = Envelope.find_by(id: self.envelope_id)
+    env.categories.each do | cat |
+      category_transactions = AccountTransaction.where(category_id: cat.id)
+      category_transactions.each do | cat_tran |
+        envelope_transactions.push(cat_tran)
+      end
+    end
+    return envelope_transactions
+  end
 end
