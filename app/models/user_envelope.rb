@@ -52,9 +52,15 @@ class UserEnvelope < ApplicationRecord
     env.categories.each do | cat |
       category_transactions = AccountTransaction.where(category_id: cat.id)
       category_transactions.each do | cat_tran |
+        # clean_trans_date = cat_tran.date.to_date.to_formatted_s(:rfc822)
+        # cat_tran.clean_trans_date = clean_trans_date
         envelope_transactions.push(cat_tran)
       end
     end
     return envelope_transactions
   end
+
+  # def clean_trans_date
+  #   date.to_date.to_formatted_s(:rfc822)
+  # end
 end

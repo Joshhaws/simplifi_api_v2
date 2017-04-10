@@ -20,4 +20,24 @@ class User < ApplicationRecord
         break token unless User.exists?(token: token)
       end
     end
+
+    def overall_budget
+      self.user_envelopes.sum(:amount)
+    end
+
+    def overall_spent
+      overall_spent = 0
+      self.user_envelopes.each do | user_env |
+        envelope_amount = 0
+        env = Envelope.find_by(id: user_env.envelope_id)
+        env.categories.each do | cat |
+          category_transactions = AccountTransaction.where(category_id: cat.id, user_id: self.id)
+          category_transactions.each do | cat_tran |
+            envelope_amount += cat_tran.amount
+          end
+        end
+        overall_spent += envelope_amount
+      end
+      return overall_spent
+    end
 end

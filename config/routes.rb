@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   post '/login' => 'sessions#create'
   get '/logout' => 'sessions#destroy'
 
+  get '/get_envelopes' => 'user_envelopes#get_envelopes'
   #plaid routes
   post '/set_access_token' => 'accounts#set_access_token'
   post '/get_access_token' => 'accounts#get_access_token'

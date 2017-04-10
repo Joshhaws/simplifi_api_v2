@@ -8,6 +8,12 @@ class UserEnvelopesController < ApplicationController
     render json: @user_envelopes
   end
 
+  def get_envelopes
+    @user_envelopes = @current_user.user_envelopes
+
+    render json: @user_envelopes, each_serializer: SimpleUserEnvelopeSerializer
+  end
+
   # GET /user_envelopes/1
   def show
     render json: @user_envelope
