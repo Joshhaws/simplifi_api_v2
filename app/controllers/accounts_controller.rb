@@ -59,12 +59,12 @@ class AccountsController < ApplicationController
     exchange_token_response = client.item.public_token.exchange(params['public_token'])
     access_token = exchange_token_response['access_token']
 
-    @current_user = User.find_by(token: 'HIWvsucD1sQYdtRlFY45yAtt')
+    # @current_user = User.find_by(token: 'KXT02Okxt0M9VWpr9ZRR4wtt')
     PlaidAccessToken.create(user_id: @current_user.id, plaid_access_token: access_token)
 
     #code that takes the response and populates our db
     plaid_accounts
-    plaid_transactions
+    #plaid_transactions
   end
 
   def plaid_accounts
@@ -72,10 +72,12 @@ class AccountsController < ApplicationController
                            client_id: "58d324444e95b819440e4877",
                            secret: "92f24058f1bbfd1ee613a5a98b3f0d",
                            public_key: "4181b5e7e3476f2974824d3a1d4e52")
-      auth_response = client.auth.get(@current_user.plaid_access_tokens.last.plaid_access_token)
-      auth_response['accounts'].each do |a|
-        Account.create!(user: @current_user, account_id: a['account_id'], available_balance: a['balances']['available'], current_balance: a['balances']['current'], name: a['name'], official_name: a['official_name'], account_subtype: a['subtype'], account_type: a['type'])
-      end
+    debugger
+    auth_response = client.auth.get(@current_user.plaid_access_tokens.last.plaid_access_token)
+    institution_response = client.institutions.get_by_id(auth_response['item']['institution_id'])
+    auth_response['accounts'].each do |a|
+      Account.create!(user: @current_user, account_id: a['account_id'], available_balance: a['balances']['available'], current_balance: a['balances']['current'], name: a['name'], official_name: a['official_name'], account_subtype: a['subtype'], account_type: a['type'], institution_name: institution_response['institution']['name'])
+    end
   end
 
   def plaid_transactions
