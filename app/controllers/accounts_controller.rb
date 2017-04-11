@@ -1,6 +1,6 @@
 class AccountsController < ApplicationController
   before_action :set_account, only: [:show, :update, :destroy]
-  skip_before_action :authenticate, only: [:access_token, :get_access_token, :plaid_accounts, :plaid_item, :plaid_transactions, :create_public_token]
+  skip_before_action :authenticate, only: [:access_token, :plaid_accounts, :plaid_item, :plaid_transactions, :create_public_token]
 
   # GET /accounts
   def index
