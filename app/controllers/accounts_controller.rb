@@ -73,6 +73,7 @@ class AccountsController < ApplicationController
     auth_response['accounts'].each do |a|
       Account.create!(user: @current_user, account_id: a['account_id'], available_balance: a['balances']['available'], current_balance: a['balances']['current'], name: a['name'], official_name: a['official_name'], account_subtype: a['subtype'], account_type: a['type'], institution_name: institution_response['institution']['name'])
     end
+    # render json: {"success":true}
   end
 
   def plaid_transactions
