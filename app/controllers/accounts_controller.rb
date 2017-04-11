@@ -1,6 +1,6 @@
 class AccountsController < ApplicationController
   before_action :set_account, only: [:show, :update, :destroy]
-  skip_before_action :authenticate, only: [:access_token, :plaid_accounts, :plaid_item, :plaid_transactions, :create_public_token]
+  skip_before_action :authenticate, only: [:access_token, :plaid_item, :create_public_token]
 
   # GET /accounts
   def index
@@ -60,7 +60,7 @@ class AccountsController < ApplicationController
     PlaidAccessToken.create(user_id: @current_user.id, plaid_access_token: access_token)
     #code that takes the response and populates our db
     plaid_accounts
-    #plaid_transactions
+    plaid_transactions
   end
 
   def plaid_accounts
@@ -73,7 +73,6 @@ class AccountsController < ApplicationController
     auth_response['accounts'].each do |a|
       Account.create!(user: @current_user, account_id: a['account_id'], available_balance: a['balances']['available'], current_balance: a['balances']['current'], name: a['name'], official_name: a['official_name'], account_subtype: a['subtype'], account_type: a['type'], institution_name: institution_response['institution']['name'])
     end
-    render json: {"success":true}
   end
 
   def plaid_transactions
@@ -87,6 +86,7 @@ class AccountsController < ApplicationController
     transactions_response['transactions'].each do |t|
       AccountTransaction.create!(account_id: t['account_id'], user_id: @current_user.id, transaction_id: t['transaction_id'], category_id: t['category_id'], amount:t['amount'], transaction_type: t['transaction_type'], date: t['date'], pending: t['pending'], pending_transaction_id: t['pending_transaction_id'], city: t['city'], state: t['state'], zip: t['zip'], lat: t['lat'], lon:t['lon'], name: t['name'], address: t['address'])
     end
+    render json: {"success":true}
   end
 
   def update_account_transactions
