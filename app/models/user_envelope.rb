@@ -11,7 +11,7 @@ class UserEnvelope < ApplicationRecord
     envelope_amount = 0
     env = Envelope.find_by(id: self.envelope_id)
     env.categories.each do | cat |
-      category_transactions = AccountTransaction.where(category_id: cat.id)
+      category_transactions = AccountTransaction.where(category_id: cat.id, user_id: user.id)
       category_transactions.each do | cat_tran |
         envelope_amount += cat_tran.amount
       end
@@ -28,7 +28,7 @@ class UserEnvelope < ApplicationRecord
     categories_amount_spent = []
     env = Envelope.find_by(id: self.envelope_id)
     env.categories.each do | cat |
-      category_transactions = AccountTransaction.where(category_id: cat.id)
+      category_transactions = AccountTransaction.where(category_id: cat.id, user_id: user.id)
       category_amount = 0
       category_transactions.each do | cat_tran |
         category_amount += cat_tran.amount
@@ -50,7 +50,7 @@ class UserEnvelope < ApplicationRecord
     envelope_transactions = []
     env = Envelope.find_by(id: self.envelope_id)
     env.categories.each do | cat |
-      category_transactions = AccountTransaction.where(category_id: cat.id)
+      category_transactions = AccountTransaction.where(category_id: cat.id, user_id: user.id)
       category_transactions.each do | cat_tran |
         # clean_trans_date = cat_tran.date.to_date.to_formatted_s(:rfc822)
         # cat_tran.clean_trans_date = clean_trans_date
