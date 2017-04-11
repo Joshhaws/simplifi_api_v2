@@ -7,7 +7,7 @@ class UserEnvelope < ApplicationRecord
     return env.name
   end
 
-  def envelope_id
+  def get_envelope_id
     env = Envelope.find_by(id: self.envelope_id)
     return env.id
   end
