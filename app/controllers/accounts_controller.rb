@@ -60,7 +60,7 @@ class AccountsController < ApplicationController
     PlaidAccessToken.create(user_id: @current_user.id, plaid_access_token: access_token)
     #code that takes the response and populates our db
     plaid_accounts
-    plaid_transactions
+    #plaid_transactions
   end
 
   def plaid_accounts
