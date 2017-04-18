@@ -4,9 +4,12 @@ This is the API code for simplifiapi, this api provides all of the endpoints and
 
 To run this project locally the api requires:
 
-- Installed ruby
-- Install mysql
-- Navigate to the directory of where you have cloned the project
+- Install ruby and rails
+- Install mysql, and create database named simplifi_development_v2
+- Once you've cloned the repo on to your local system run bundle install to install the dependencies from the gemfile, you need to run "bundle install" in the terminal while in the path of the project.
+- While navigated to the project directory you will also need to run "rake db:migrate" in order to create the database scheme in the database that you created earlier.
+- Enter the commdand "rails s" to start the rails server that will host the api locally
+- You can visit the api at localhost:3000
 
 You can go ahead and test this api using postman with the different endpoints outlined in the config/routes file in the project.
 
